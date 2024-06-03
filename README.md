@@ -99,13 +99,15 @@ A mini project for auto grad learning
 
 #### ad.nn
 
-1. Module
-神经网络模块基类，其中包含zero_grad()和parameters()方法。
+1. **Module**
+
+神经网络模块基类。
 
 - zero_grad(self): 这个方法用于将模块中所有参数的梯度重置为0。这通常在每次反向传播之前调用，以清除上一次迭代的梯度。
 - parameters(self): 这个方法返回一个包含模块所有参数的列表。在基类中,它返回一个空列表，因为基础的 Module 类并没有任何参数。但在子类中，我们会重写这个方法，返回子类特有的参数列表。
 
-2. Neuron
+2. **Neuron**
+
 神经网络神经元。
 
 - __init__(self, nin, nonlin=True): 神经元构造函数，nin为输入数量，nonlin表示该神经元是否为线性函数神经元。同时初始化权重值self.w和偏置self.b。
@@ -113,7 +115,8 @@ A mini project for auto grad learning
 - paramerters(self): 返回神经元所有参数。
 - __repr__(self): 返回字符串用于表示神经元。
 
-3. Layer
+3. **Layer**
+
 神经网络层，由多个神经元组成。
 
 - __init__(self, nin, nout, \*\*kwargs): 层构造函数，nin为输入数量，nout为输出数量，\*\*kwargs用于接受其它参数，如给神经元的nonlin。同时构建该层的神经元列表self.neurons。
@@ -121,7 +124,8 @@ A mini project for auto grad learning
 - paramerters(self): 返回层所有参数。
 - __repr__(self): 返回字符串用于表示层。
 
-4. MLP
+4. **MLP**
+
 神经网络，由多层组成。
 
 - __init__(self, nin, nouts): 层构造函数，nin为输入数量，nouts为每层输出数量。nin添加到nouts为sz表示层大小，self.layers根据sz[i]和sz[i+1]相邻两层大小构建layer对象列表。
