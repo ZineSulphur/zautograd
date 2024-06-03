@@ -5,9 +5,56 @@ A mini project for auto grad learning
 
 ## 项目内容
 
-### ad
+### 自动微分方式
 
-自动微分方法
+#### 前向传播
+
+前向模式（Forward Automatic Differentiation，也叫做 tangent mode AD）或者前向累积梯度（前向模式）。
+
+前向模式从计算图的起点开始，沿着计算图边的方向依次向前计算，最终到达计算图的终点。它根据自变量的值计算出计算图中每个节点的值 以及其导数值，并保留中间结果。一直得到整个函数的值和其导数值。整个过程对应于一元复合函数求导时从最内层逐步向外层求导。
+
+以 z = lnx + xy - siny 的 dz/dx 为例:
+|Forward Primal Trace|Forward Tangent Trace|
+|---|---|
+|x = 2|dx = 1|
+|y = 5|dy = 0|
+|t1 = lnx = ln2|dt1 = dx/x = 1/2|
+|t2 = xy = 2x5|dt2 = ydx + xdy = 1x5+5x0|
+|t3 = siny = sin5|dt3 = cosydy = cos5 x 0|
+|t4 = t1 + t2 = 0.693+10|dt4 = dt1 + dt2 = 0.5+5|
+|t5 = t4 - t3 = 10.693+0.959|dt5 = dt4 - dt3 = 5.5 -0|
+|y = t5 = 11.652|dy/dx = dt5/dx = 5.5|
+
+可见前向传播是在进行相应计算的同时计算此时的中间变量的微分。最后根据链式法则求最终值
+
+同时我们可以注意到，当我们求dz/dx时，dx的初始值为1，dy为0。若初始值为dx=0，dy=1时，我们就可以求dz/dy即z对y的梯度。
+
+#### 反向传播
+
+以 z = lnx + xy - siny 的 dz/dx 为例, vi = dz/dti:
+|Forward Primal Trace|Forward Tangent Trace|
+|---|---|
+|x = 2|dx = 5.5|
+|y = 5|dy = 1.762|
+|t1 = lnx = ln2|dx = dx + v1/x = 5.5|
+|t2 = xy = 2x5|dy = dy + v2 * dt2/dy = dy + v2 * x = 1.716|
+||dx = v2 * dt2/dx = v2 * y = 5|
+|t3 = siny = sin5|dy = v3 * dt3/dy = v3 * cosy = -0.284|
+|t4 = t1 + t2 = 0.693+10|v1 = v4 * dt4/dt1 = v4 * 1 = 1|
+||v2 = v4 * dt4/dt2 = v4 * 1 = 1|
+|t5 = t4 - t3 = 10.693+0.959|v3 = v5 * dt5/dt3 = v5 * -1 = -1|
+||v4 = v5 * dt5/dt4 = v5 * 1 = 1|
+|y = t5 = 11.652|v5 = dy = 1|
+
+可以看见反向传播是以链式法则为基础，从结果反向推导至需要的变量，最后求出其梯度。
+
+如果不同的式子中都有同个变量，则将不同式子的梯度值加起来。
+
+因此在开始计算前需要将因变量的梯度设为1，其它梯度都设为0。
+
+### 自动微分方法
+
+自动微分方法，主要分为基本表达式法，操作符重载法，源码转换法三种
 
 #### ad.adlib
 
