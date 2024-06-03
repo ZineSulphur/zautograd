@@ -28,7 +28,7 @@ class ADlib():
     def ADdiv(x, dx, y, dy):
         # x / y -> z
         z = x / y
-        dz = dx /y + (x / (y * y)) * dy
+        dz = dx /y - (x / (y * y)) * dy
         return z, dz
 
     @staticmethod
