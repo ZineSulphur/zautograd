@@ -13,7 +13,9 @@ class ADlib():
     @staticmethod
     def ADsub(x, dx, y, dy):
         # x - y -> z
-        return ADlib.ADadd(x, dx, -y, -dy)
+        z = x - y
+        dz = dx - dy
+        return z, dz
 
     @staticmethod
     def ADmul(x, dx, y, dy):
