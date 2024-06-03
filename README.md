@@ -45,6 +45,8 @@ A mini project for auto grad learning
 
 #### 反向传播
 
+反向模式（Reverse Automatic Differentiation，也叫做 adjoint mode AD）或者说反向累计梯度（反向模式）。
+
 以 z = lnx + xy - siny 的 dz/dx 为例, vi = dz/dti，微分阶段从下往上计算:
 |Forward Primal Trace|Reverse Adjoint Trace|
 |---|---|
