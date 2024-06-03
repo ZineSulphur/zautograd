@@ -29,6 +29,9 @@ class Value():
             v._backward()
             
     # 重载加法 self + other
+    # z = x + y
+    # forward dz = dx + dy
+    # backward vx = dz*1, vy = dz*1, vi=dz/di
     def __add__(self, other):
         # 判断other类型并转换成Value类型
         other = other if isinstance(other, Value) else Value(other)
@@ -45,6 +48,9 @@ class Value():
     
     
     # 重载乘法
+    # z = x * y
+    # forward dz = y * dx + x * dy
+    # backward vx = y*dz, vy = x*dz, vi=dz/di
     def __mul__(self, other):
         other = other if isinstance(other, Value) else Value(other)
         out = Value(self.data * other.data, (self, other), '*')
@@ -57,6 +63,9 @@ class Value():
         return out
     
     # 重载乘方
+    # z = x ** y
+    # forward dz = (y * x ** (y - 1)) * dx
+    # backward vx = (y * x ** (y - 1)) * dz, vi=dz/di
     def __pow__(self, other):
         assert isinstance(other, (int, float)), "only supporting int/float"
         out = Value(self.data ** other, (self,), f'**{other}')
