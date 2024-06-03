@@ -1,7 +1,7 @@
 # the Lib base autograd functions
 import math
 
-def ADlib():
+class ADlib():
 
     @staticmethod
     def ADadd(x, dx, y, dy):
@@ -13,7 +13,7 @@ def ADlib():
     @staticmethod
     def ADsub(x, dx, y, dy):
         # x - y -> z
-        return ADadd(x, dx, -y, -dy)
+        return ADlib.ADadd(x, dx, -y, -dy)
 
     @staticmethod
     def ADmul(x, dx, y, dy):
