@@ -31,8 +31,8 @@ A mini project for auto grad learning
 
 #### 反向传播
 
-以 z = lnx + xy - siny 的 dz/dx 为例, vi = dz/dti:
-|Forward Primal Trace|Forward Tangent Trace|
+以 z = lnx + xy - siny 的 dz/dx 为例, vi = dz/dti，微分阶段从下往上计算:
+|Forward Primal Trace|Reverse Adjoint Trace|
 |---|---|
 |x = 2|dx = 5.5|
 |y = 5|dy = 1.762|
