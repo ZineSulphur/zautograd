@@ -91,6 +91,54 @@ A mini project for auto grad learning
 
 源码转换的实现提供了对编程语言的扩展，可自动将算法分解为支持自动微分的基本操作。通常作为预处理器执行，以将扩展语言的输入转换为原始语言。简单来说就是利用源语言来实现领域扩展语言 DSL 的操作方式。
 
+#### demo.ipynb
+
+以上实现方法的demo，包含一个简单的函数的求梯度例子和运行结果。
+
+### 简易神经网络
+
+#### ad.nn
+
+1. Module
+神经网络模块基类，其中包含zero_grad()和parameters()方法。
+
+- zero_grad(self): 这个方法用于将模块中所有参数的梯度重置为0。这通常在每次反向传播之前调用，以清除上一次迭代的梯度。
+- parameters(self): 这个方法返回一个包含模块所有参数的列表。在基类中,它返回一个空列表，因为基础的 Module 类并没有任何参数。但在子类中，我们会重写这个方法，返回子类特有的参数列表。
+
+2. Neuron
+神经网络神经元。
+
+- __init__(self, nin, nonlin=True): 神经元构造函数，nin为输入数量，nonlin表示该神经元是否为线性函数神经元。同时初始化权重值self.w和偏置self.b。
+- __call__(self, x): 定义神经元前向传播逻辑，即激活值act为输入x和权重self.w的点积，加上偏置self.b。若nonlin=True则加上ReLU函数进行激活。
+- paramerters(self): 返回神经元所有参数。
+- __repr__(self): 返回字符串用于表示神经元。
+
+3. Layer
+神经网络层，由多个神经元组成。
+
+- __init__(self, nin, nout, \*\*kwargs): 层构造函数，nin为输入数量，nout为输出数量，\*\*kwargs用于接受其它参数，如给神经元的nonlin。同时构建该层的神经元列表self.neurons。
+- __call__(self, x): 定义层前向传播逻辑，给定输入x给层中所有神经元，返回一个神经元的输出或者多个神经元的输出列表。
+- paramerters(self): 返回层所有参数。
+- __repr__(self): 返回字符串用于表示层。
+
+4. MLP
+神经网络，由多层组成。
+
+- __init__(self, nin, nouts): 层构造函数，nin为输入数量，nouts为每层输出数量。nin添加到nouts为sz表示层大小，self.layers根据sz[i]和sz[i+1]相邻两层大小构建layer对象列表。
+- __call__(self, x): 定义MLP前向传播逻辑，给定输入x给层中所有层，将每层输出作为下一层输入，最后返回最后一层输出。
+- paramerters(self): 返回MLP所有参数。
+- __repr__(self): 返回字符串用于表示MLP。
+
+#### 简易训练步骤
+
+1. 创建训练循环
+2. 构建模型MLP
+3. 构建损失函数loss
+4. 正向计算
+5. 梯度清零和反向传播
+6. 更新相关参数
+7. 下个循环
+
 ## 参考资料
 
 [从零实现自动微分框架](https://garden.maxieewong.com/000.wiki/%E4%BB%8E%E9%9B%B6%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%BE%AE%E5%88%86%E6%A1%86%E6%9E%B6/)
